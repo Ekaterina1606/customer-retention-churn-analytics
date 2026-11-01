@@ -58,8 +58,6 @@ GROUP BY PaymentMethod
 ORDER BY churn_rate_pct DESC;
 
 -- 5. Monthly charges and churn-related monthly charges
--- These are sums of customer monthly charges, NOT verified revenue
--- earned or lost during a specific calendar month.
 SELECT
     ROUND(SUM(MonthlyCharges), 2) AS total_monthly_charges_usd,
     ROUND(AVG(MonthlyCharges), 2) AS avg_monthly_charge_usd,
