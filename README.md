@@ -24,19 +24,19 @@ Explore the full interactive project on [Tableau Public](https://public.tableau.
 
 ### 1. Customer Churn Overview
 
-![Customer Churn Overview](screenshots/dashboard1.jpg)
+![Customer Churn Overview](screenshots/Dashboard 1.png)
 
 This dashboard presents key churn metrics and analyzes customer churn by contract type, tenure, and payment method.
 
 ### 2. Customer Segmentation
 
-![Customer Segmentation](screenshots/dashboard2.jpg)
+![Customer Segmentation](screenshots/Dashboard 2.png)
 
 This dashboard explores churn patterns across internet service types, online security, technical support, and senior citizen segments.
 
 ### 3. Revenue & Retention Opportunities
 
-![Revenue & Retention Opportunities](screenshots/dashboard3.jpg)
+![Revenue & Retention Opportunities](screenshots/Dashboard 3.png)
 
 This dashboard examines monthly charges, charges associated with churned customers, and revenue-related patterns across customer segments.
 
