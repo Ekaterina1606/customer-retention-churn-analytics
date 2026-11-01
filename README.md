@@ -1,22 +1,36 @@
 # Customer Retention & Churn Analytics
 
+### Customer Churn Analysis | SQL (DuckDB) | Tableau Public | BI Data Mart
+
 ## Project Overview
 
 This project analyzes customer churn, customer segments, and monthly charges using the Telco Customer Churn dataset.
 
 The goal is to identify customer groups associated with higher churn rates, explore revenue-related retention opportunities, and communicate findings through interactive Tableau dashboards and SQL analysis.
 
+The project also includes a customer-level analytical data mart developed in DuckDB, demonstrating SQL-based data preparation, customer segmentation, KPI validation, and data quality checks.
+
 ## Tools & Technologies
 
 - **Tableau Public** — interactive dashboards, KPI calculations, and customer segmentation
-- **SQL (DuckDB-compatible)** — analytical queries for customer churn and revenue metrics
-- **GitHub** — project documentation and SQL code
+- **SQL (DuckDB)** — analytical queries, data transformation, and data mart development
+- **Data Quality Validation** — duplicate detection, missing value checks, and KPI reconciliation
+- **GitHub** — SQL scripts, documentation, and project deliverables
 
 ## Dataset
 
 **Dataset:** Telco Customer Churn
 
-The dataset contains 7,043 customer records and 21 columns, including contract type, tenure, payment method, internet service, monthly charges, and churn status.
+The dataset contains 7,043 customer records and 21 columns, including:
+
+- Customer ID and demographic attributes
+- Contract type and customer tenure
+- Payment method
+- Internet service and additional services
+- Monthly and total charges
+- Customer churn status
+
+**Data granularity:** One row per customer.
 
 ## Interactive Tableau Dashboards
 
@@ -53,6 +67,103 @@ This dashboard examines monthly charges, charges associated with churned custome
 
 *Note: Monthly charges represent amounts recorded in the dataset, not verified revenue for a specific calendar month. The charges associated with churned customers are a descriptive measure, not confirmed realized revenue loss.*
 
+## SQL Analysis
+
+The project includes analytical SQL queries covering:
+
+- Overall customer counts and churn rates
+- Churn by contract type
+- Churn by customer tenure
+- Churn by payment method
+- Monthly charges and churn-related revenue metrics
+- Customer segments associated with higher churn
+
+**SQL file:** [churn_analysis.sql](churn_analysis.sql)
+
+## SQL Data Mart Development
+
+In addition to the exploratory SQL analysis, a customer-level analytical data mart was developed using DuckDB.
+
+The purpose of the data mart is to demonstrate SQL-based data preparation and modeling for BI reporting.
+
+**Data mart:** `mart_customer_churn`  
+**Database:** DuckDB  
+**Granularity:** One row per customer  
+**Source:** Telco Customer Churn CSV dataset
+
+### Data Transformation
+
+The SQL data mart performs the following transformations:
+
+1. Loads the source CSV dataset into DuckDB.
+2. Converts monthly and total charges into numeric data types.
+3. Handles missing and non-numeric values in `TotalCharges`.
+4. Creates a binary customer churn indicator (`is_churned`).
+5. Segments customers into tenure groups (0–6, 7–12, 13–24, 25–48, and 49+ months).
+6. Creates a measure representing monthly charges associated with churned customers.
+
+These transformations produce a structured customer-level table suitable for further BI analysis.
+
+**SQL script:** [create_customer_churn_mart.sql](create_customer_churn_mart.sql)
+
+### Data Mart Structure
+
+The analytical data mart contains customer attributes, segmentation fields, and calculated churn indicators.
+
+![SQL Data Mart Structure](screenshots/mart_structure.png)
+
+Key derived fields include:
+
+| Field | Description |
+|---|---|
+| `is_churned` | Binary churn indicator (1 = churned, 0 = retained) |
+| `tenure_group` | Customer tenure segmentation |
+| `churned_monthly_charges` | Monthly charges associated with churned customers |
+
+### KPI Validation
+
+The SQL data mart was validated against the overall customer churn metrics.
+
+![SQL KPI Validation](screenshots/mart_kpi_validation.png)
+
+**Validated results:**
+
+| Metric | Value |
+|---|---:|
+| Total Customers | 7,043 |
+| Churned Customers | 1,869 |
+| Churn Rate | 26.54% |
+
+The validated values are consistent with the original dataset and the overall churn analysis.
+
+## Data Quality Validation
+
+Data quality checks were developed to assess the reliability and consistency of the prepared analytical dataset.
+
+The checks cover:
+
+- Duplicate customer IDs
+- Missing customer identifiers
+- Missing total charge values
+- Missing churn indicators
+- KPI consistency across the analytical data mart
+
+**SQL script:** [data_quality_checks.sql](data_quality_checks.sql)
+
+### Data Quality Results
+
+![Data Quality Checks](screenshots/data_quality_checks.png)
+
+The validation confirmed:
+
+- No duplicate customer identifiers
+- No missing customer IDs
+- No missing churn indicators
+
+The source dataset also contains missing values in `TotalCharges`, which are preserved as NULL rather than replaced with arbitrary values.
+
+This approach keeps the original data limitations visible and avoids introducing unsupported assumptions.
+
 ## Key Insights
 
 1. **Contract type:** Month-to-month customers have a substantially higher churn rate (42.7%) than customers with one-year (11.3%) or two-year contracts (2.8%).
@@ -63,33 +174,58 @@ This dashboard examines monthly charges, charges associated with churned custome
 
 These findings describe associations in the dataset and do not establish causation.
 
-## SQL Analysis
-
-The project includes analytical SQL queries covering:
-
-- Overall customer counts and churn rates
-- Churn by contract type
-- Churn by tenure
-- Churn by payment method
-- Monthly charges and churn-related revenue metrics
-- Customer segments associated with higher churn
-
-**SQL file:** [churn_analysis.sql](churn_analysis.sql)
-
 ## Business Recommendations
 
 Based on the observed patterns, potential areas for further investigation include:
 
-- Developing onboarding and retention initiatives for newer customers
-- Evaluating retention offers for month-to-month subscribers
-- Investigating customer experience and pricing perceptions among fiber optic subscribers
-- Examining the relationship between payment methods and customer churn
+- **New customer retention:** Evaluate onboarding and early engagement initiatives for customers within their first six months.
+- **Contract optimization:** Test retention offers and longer-term contract incentives for month-to-month subscribers.
+- **Service experience:** Investigate customer satisfaction and pricing perceptions among fiber optic subscribers.
+- **Payment behavior:** Examine the relationship between payment methods and churn while accounting for other customer characteristics.
 
-These are hypotheses for future testing rather than proven interventions.
+These recommendations represent hypotheses for further analysis and testing rather than proven interventions.
+
+## Project Architecture
+
+The project demonstrates two complementary BI workflows.
+
+**SQL Data Preparation:**
+
+`Source CSV → DuckDB → SQL Transformations → Customer Churn Data Mart → Data Quality Validation`
+
+**Dashboard Development:**
+
+`Source CSV → Tableau Public → Interactive Dashboards → Business Insights`
+
+*The Tableau dashboards were developed independently using the original dataset. The SQL data mart is provided as a separate BI development component and is not the underlying source of the published dashboards.*
+
+## How to Reproduce the SQL Analysis
+
+1. Download the Telco Customer Churn CSV dataset.
+2. Install DuckDB.
+3. Place the source CSV in the working directory, using the filename referenced in the SQL script, or update the CSV file path.
+4. Open DuckDB and execute `create_customer_churn_mart.sql`.
+5. Execute `data_quality_checks.sql` to validate the resulting data mart.
+6. Run `churn_analysis.sql` to explore additional analytical queries.
+
+The SQL scripts are designed to run in DuckDB.
 
 ## Project Deliverables
 
 - Three interactive Tableau dashboards
-- SQL analytical queries
-- Business insights and recommendations
+- Exploratory SQL analysis
+- Customer-level SQL analytical data mart
+- Data quality and KPI validation queries
+- SQL execution screenshots
+- Customer churn insights and business recommendations
 - GitHub project documentation
+
+## Skills Demonstrated
+
+**SQL & Data Preparation:** Data type conversion, CTEs, conditional logic, aggregations, customer segmentation, and analytical data mart development.
+
+**Data Quality:** Duplicate detection, missing value assessment, and KPI reconciliation.
+
+**BI & Visualization:** KPI design, interactive dashboard development, customer segmentation, and business-oriented reporting.
+
+**Business Analytics:** Churn analysis, retention opportunity identification, and data-driven recommendations.
