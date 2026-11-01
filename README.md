@@ -20,30 +20,25 @@ The dataset contains 7,043 customer records and 21 columns, including contract t
 
 ## Interactive Tableau Dashboards
 
-[**View the Tableau Project**](https://public.tableau.com/app/profile/sophia.bank/viz/CustomerRetentionChurnAnalytics/Dashboard1)
-
-The Tableau workbook contains three interactive dashboards:
+Explore the full interactive project on [Tableau Public](https://public.tableau.com/app/profile/sophia.bank/viz/CustomerRetentionChurnAnalytics/Dashboard1).
 
 ### 1. Customer Churn Overview
 
-- Total customers and overall churn rate
-- Monthly charges associated with churned customers
-- Churn by contract type, tenure, and payment method
-- Interactive contract filter
+![Customer Churn Overview](screenshots/dashboard1.jpg)
+
+This dashboard presents key churn metrics and analyzes customer churn by contract type, tenure, and payment method.
 
 ### 2. Customer Segmentation
 
-- Churn by internet service type
-- Churn by online security subscription
-- Churn by technical support subscription
-- Churn comparison between senior and non-senior customers
+![Customer Segmentation](screenshots/dashboard2.jpg)
+
+This dashboard explores churn patterns across internet service types, online security, technical support, and senior citizen segments.
 
 ### 3. Revenue & Retention Opportunities
 
-- Total and average monthly charges
-- Monthly charges associated with churned customers
-- Revenue-related metrics by contract type
-- Average monthly charges by churn status
+![Revenue & Retention Opportunities](screenshots/dashboard3.jpg)
+
+This dashboard examines monthly charges, charges associated with churned customers, and revenue-related patterns across customer segments.
 
 ## Key Performance Indicators
 
